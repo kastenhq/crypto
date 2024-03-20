@@ -23,8 +23,6 @@ package pbkdf2 // import "golang.org/x/crypto/pbkdf2"
 
 import (
 	"hash"
-
-	opensslpbkdf "github.com/golang-fips/openssl/v2"
 )
 
 // Key derives a key from the password, salt and iteration count, returning a
@@ -44,7 +42,7 @@ import (
 // Using a higher iteration count will increase the cost of an exhaustive
 // search but will also make derivation proportionally slower.
 func Key(password, salt []byte, iter, keyLen int, h func() hash.Hash) []byte {
-	key, err := opensslpbkdf.PBKDF2(password, salt, iter, keyLen, h)
+	key, err := pbkdf2_key_derivation(password, salt, iter, keyLen, h)
 	if err != nil {
 		panic(err)
 	}
