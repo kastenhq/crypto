@@ -11,8 +11,6 @@
 package hkdf // import "golang.org/x/crypto/hkdf"
 
 import (
-	"crypto/hmac"
-	"errors"
 	"hash"
 	"io"
 )
@@ -24,56 +22,11 @@ import (
 // Expand invocations and different context values. Most common scenarios,
 // including the generation of multiple keys, should use New instead.
 func Extract(hash func() hash.Hash, secret, salt []byte) []byte {
-	if salt == nil {
-		salt = make([]byte, hash().Size())
+	key, err := hkdfExtract(hash, secret, salt)
+	if err != nil {
+		panic(err)
 	}
-	extractor := hmac.New(hash, salt)
-	extractor.Write(secret)
-	return extractor.Sum(nil)
-}
-
-type hkdf struct {
-	expander hash.Hash
-	size     int
-
-	info    []byte
-	counter byte
-
-	prev []byte
-	buf  []byte
-}
-
-func (f *hkdf) Read(p []byte) (int, error) {
-	// Check whether enough data can be generated
-	need := len(p)
-	remains := len(f.buf) + int(255-f.counter+1)*f.size
-	if remains < need {
-		return 0, errors.New("hkdf: entropy limit reached")
-	}
-	// Read any leftover from the buffer
-	n := copy(p, f.buf)
-	p = p[n:]
-
-	// Fill the rest of the buffer
-	for len(p) > 0 {
-		if f.counter > 1 {
-			f.expander.Reset()
-		}
-		f.expander.Write(f.prev)
-		f.expander.Write(f.info)
-		f.expander.Write([]byte{f.counter})
-		f.prev = f.expander.Sum(f.prev[:0])
-		f.counter++
-
-		// Copy the new batch into p
-		f.buf = f.prev
-		n = copy(p, f.buf)
-		p = p[n:]
-	}
-	// Save leftovers for next run
-	f.buf = f.buf[n:]
-
-	return need, nil
+	return key
 }
 
 // Expand returns a Reader, from which keys can be read, using the given
@@ -83,8 +36,11 @@ func (f *hkdf) Read(p []byte) (int, error) {
 // random or pseudorandom cryptographically strong key. See RFC 5869, Section
 // 3.3. Most common scenarios will want to use New instead.
 func Expand(hash func() hash.Hash, pseudorandomKey, info []byte) io.Reader {
-	expander := hmac.New(hash, pseudorandomKey)
-	return &hkdf{expander, expander.Size(), info, 1, nil, nil}
+	reader, err := hkdfExpand(hash, pseudorandomKey, info)
+	if err != nil {
+		panic(err)
+	}
+	return reader
 }
 
 // New returns a Reader, from which keys can be read, using the given hash,
