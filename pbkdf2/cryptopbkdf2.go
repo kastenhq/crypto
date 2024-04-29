@@ -1,4 +1,4 @@
-//go:build !fipsonly
+//go:build !goexperiment.opensslcrypto
 
 package pbkdf2
 
