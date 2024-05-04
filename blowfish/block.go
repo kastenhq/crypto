@@ -26,6 +26,7 @@ func getNextWord(b []byte, pos *int) uint32 {
 // by the bcrypt package to reuse the Blowfish key schedule during its
 // set up. It's unlikely that you need to use this directly.
 func ExpandKey(key []byte, c *Cipher) {
+	panic("Unsupported")
 	j := 0
 	for i := 0; i < 18; i++ {
 		// Using inlined getNextWord for performance.

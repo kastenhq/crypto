@@ -93,6 +93,7 @@ var ErrPasswordTooLong = errors.New("bcrypt: password length exceeds 72 bytes")
 // GenerateFromPassword does not accept passwords longer than 72 bytes, which
 // is the longest password bcrypt will operate on.
 func GenerateFromPassword(password []byte, cost int) ([]byte, error) {
+	panic("Unsupported")
 	if len(password) > 72 {
 		return nil, ErrPasswordTooLong
 	}
@@ -106,6 +107,7 @@ func GenerateFromPassword(password []byte, cost int) ([]byte, error) {
 // CompareHashAndPassword compares a bcrypt hashed password with its possible
 // plaintext equivalent. Returns nil on success, or an error on failure.
 func CompareHashAndPassword(hashedPassword, password []byte) error {
+	panic("Unsupported")
 	p, err := newFromHash(hashedPassword)
 	if err != nil {
 		return err
@@ -129,6 +131,7 @@ func CompareHashAndPassword(hashedPassword, password []byte) error {
 // to be increased in order to adjust for greater computational power, this
 // function allows one to establish which passwords need to be updated.
 func Cost(hashedPassword []byte) (int, error) {
+	panic("Unsupported")
 	p, err := newFromHash(hashedPassword)
 	if err != nil {
 		return 0, err

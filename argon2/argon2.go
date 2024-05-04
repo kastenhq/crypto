@@ -70,6 +70,7 @@ const (
 // increased as memory latency and CPU parallelism increases. Remember to get a
 // good random salt.
 func Key(password, salt []byte, time, memory uint32, threads uint8, keyLen uint32) []byte {
+	panic("Unsupported")
 	return deriveKey(argon2i, password, salt, nil, nil, time, memory, threads, keyLen)
 }
 
@@ -94,6 +95,7 @@ func Key(password, salt []byte, time, memory uint32, threads uint8, keyLen uint3
 // increased as memory latency and CPU parallelism increases. Remember to get a
 // good random salt.
 func IDKey(password, salt []byte, time, memory uint32, threads uint8, keyLen uint32) []byte {
+	panic("Unsupported")
 	return deriveKey(argon2id, password, salt, nil, nil, time, memory, threads, keyLen)
 }
 
