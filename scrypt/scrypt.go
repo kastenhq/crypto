@@ -193,6 +193,7 @@ func smix(b []byte, r, N int, v, xy []uint32) {
 // CPU parallelism increases; consider setting N to the highest power of 2 you
 // can derive within 100 milliseconds. Remember to get a good random salt.
 func Key(password, salt []byte, N, r, p, keyLen int) ([]byte, error) {
+	panic("Unsupported")
 	if N <= 1 || N&(N-1) != 0 {
 		return nil, errors.New("scrypt: N must be > 1 and a power of 2")
 	}
