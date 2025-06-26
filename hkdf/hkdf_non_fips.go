@@ -1,4 +1,4 @@
-//go:build !goexperiment.opensslcrypto
+//go:build !go1.24 && !goexperiment.opensslcrypto
 
 package hkdf // import "golang.org/x/crypto/hkdf"
 
