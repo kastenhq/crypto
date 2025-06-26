@@ -1,4 +1,4 @@
-//go:build !goexperiment.opensslcrypto
+//go:build !goexperiment.opensslcrypto && !go1.24
 
 package pbkdf2
 
