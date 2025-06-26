@@ -16,7 +16,7 @@ func hkdfExtract(h func() hash.Hash, secret, salt []byte) ([]byte, error) {
 func hkdfExpand(h func() hash.Hash, pseudorandomKey, info []byte) (io.Reader, error) {
 	// Since the golang.org/x/crypto signature doesn't use a key length
 	// we use the size of the hash
-	hashSize := hash().Size()
+	hashSize := h().Size()
 	b, err := hkdf.Expand(h, pseudorandomKey, info, hashSize)
 	return bytes.NewReader(b), err
 }
