@@ -5,6 +5,8 @@ package hkdf
 import (
 	"bytes"
 	"crypto/hkdf"
+	"hash"
+	"io"
 )
 
 func hkdfExtract(h func() hash.Hash, secret, salt []byte) ([]byte, error) {
